@@ -2,15 +2,15 @@
 !.gitignore
 _*
 
-*.parquet
-*.map
-*.zip
-*.gz
-*.tar
-*.tgz
-*.mov
-*.mp4
-*.exe
+**.parquet
+**.map
+**.zip
+**.gz
+**.tar
+**.tgz
+**.mov
+**.mp4
+**.exe
 
 # images
 *.ico
