@@ -21,7 +21,7 @@ static double time = 0;
 int main(void)
 {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Snake Game\n");
-    SetTargetFPS(144);
+    SetTargetFPS(60);
     const Color backgroundcolor = {100, 130, 100};
 
     // initialize the player
@@ -66,6 +66,11 @@ int main(void)
         if ((int)(time * 10) % 10 % 2 == 0 && blink)
         {
             // RespawnApple(&apple, GRID_SIZE);
+            if (CheckCollisionPointCircle(player.segments[0].pos, apple.pos, 5))
+            {
+                RespawnApple(&apple, GRID_SIZE);
+                AddSegment(&player);
+            }
             UpdatePlayer(&player);
             blink = false;
         }

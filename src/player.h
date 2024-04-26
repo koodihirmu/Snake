@@ -30,5 +30,7 @@ typedef struct
     Vector2 movement;
 } Player;
 
+bool CheckSelfCollision(Player *player);
+void AddSegment(Player *player);
 void UpdatePlayer(Player *player); // update player position
 void PlayerRender(Player *player); // render player
