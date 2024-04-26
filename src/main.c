@@ -72,11 +72,13 @@ int main(void)
                 RespawnApple(&apple);
                 AddSegment(&player);
             }
+            UpdatePlayer(&player); // motion vector updated here
+            // TODO: Need to figure out to check the future location of the head
+            // Now this uses the old head movement so it detects the collision too early
             if (CheckSelfCollision(&player))
             {
                 GameOver = true;
             }
-            UpdatePlayer(&player);
             blink = false;
         }
         else if ((int)(time * 10) % 10 % 2 != 0 && !blink)

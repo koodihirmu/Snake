@@ -52,7 +52,9 @@ bool CheckSelfCollision(Player *player)
     //
     for (int i = 1; i < player->length; i++)
     {
-        if (Vector2Equals(Vector2Add(player->segments[0].pos, player->movement),
+        // if (Vector2Equals(Vector2Add(player->segments[0].pos, player->movement),
+        //                   player->segments[i].pos) == 1)
+        if (Vector2Equals(player->segments[0].pos,
                           player->segments[i].pos) == 1)
         {
             return true;
