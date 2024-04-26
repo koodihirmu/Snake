@@ -27,6 +27,7 @@ typedef struct
     // amount of segments currently
     int length;
     Direction dir;
+    Direction lastdir;
     Vector2 movement;
 } Player;
 

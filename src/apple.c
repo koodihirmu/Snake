@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include "apple.h"
+#include "config.h"
 
 void RenderApple(Apple *apple)
 {
@@ -7,7 +8,7 @@ void RenderApple(Apple *apple)
                   apple->size, apple->col);
 }
 
-void RespawnApple(Apple *apple, int GRID_SIZE)
+void RespawnApple(Apple *apple)
 {
     apple->pos = (Vector2){GetRandomValue(1, (GetScreenWidth() / GRID_SIZE) - 1) * GRID_SIZE,
                            GetRandomValue(1, (GetScreenHeight() / GRID_SIZE) - 1) * GRID_SIZE};

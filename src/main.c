@@ -2,10 +2,7 @@
 #include <stdio.h>
 #include "player.h"
 #include "apple.h"
-
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 400
-#define GRID_SIZE 10
+#include "config.h"
 
 static double time = 0;
 
@@ -23,6 +20,8 @@ int main(void)
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Snake Game\n");
     SetTargetFPS(60);
     const Color backgroundcolor = {100, 130, 100};
+    bool blink = true;
+    bool GameOver = false;
 
     // initialize the player
     Player player;
@@ -30,7 +29,6 @@ int main(void)
     Segment firstsegment = {(Vector2){WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2}, GRID_SIZE, BLACK};
     player.segments[0] = firstsegment;
     player.movement = (Vector2){player.segments[0].size, 0};
-    bool blink = true;
 
     Apple apple;
     apple.col = RED;
@@ -44,32 +42,39 @@ int main(void)
         switch (GetKeyPressed())
         {
         case KEY_W:
-            if (player.dir != D_DOWN || player.length == 1)
+            if (player.lastdir != D_DOWN)
                 player.dir = D_UP;
             break;
         case KEY_S:
-            if (player.dir != D_UP || player.length == 1)
+            if (player.lastdir != D_UP)
                 player.dir = D_DOWN;
             break;
         case KEY_A:
-            if (player.dir != D_RIGHT || player.length == 1)
+            if (player.lastdir != D_RIGHT)
                 player.dir = D_LEFT;
             break;
         case KEY_D:
-            if (player.dir != D_LEFT || player.length == 1)
+            if (player.lastdir != D_LEFT)
                 player.dir = D_RIGHT;
             break;
         default:
             break;
         }
 
-        if ((int)(time * 10) % 10 % 2 == 0 && blink)
+        if ((int)(time * 10) % 10 % 2 == 0 && blink && !GameOver)
         {
-            // RespawnApple(&apple, GRID_SIZE);
+            if (player.length < 10)
+            {
+                AddSegment(&player);
+            }
             if (CheckCollisionPointCircle(player.segments[0].pos, apple.pos, 5))
             {
-                RespawnApple(&apple, GRID_SIZE);
+                RespawnApple(&apple);
                 AddSegment(&player);
+            }
+            if (CheckSelfCollision(&player))
+            {
+                GameOver = true;
             }
             UpdatePlayer(&player);
             blink = false;
@@ -83,6 +88,10 @@ int main(void)
         ClearBackground(backgroundcolor);
         RenderApple(&apple);
         PlayerRender(&player);
+        if (GameOver)
+        {
+            DrawText("GAME OVER!\n", WINDOW_WIDTH / 2 - 50, WINDOW_HEIGHT / 2 - 10, 20, BLACK);
+        }
         EndDrawing();
         time += GetFrameTime();
     }

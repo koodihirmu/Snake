@@ -3,6 +3,20 @@
 #include <stdio.h>
 #include "player.h"
 #include "apple.h"
+#include "config.h"
+
+void CheckLimits(Player *player)
+{
+    //
+    if (player->segments[0].pos.x + player->movement.x > GetScreenWidth())
+        player->segments[0].pos.x -= GetScreenWidth() + GRID_SIZE;
+    if (player->segments[0].pos.x + player->movement.x < 0)
+        player->segments[0].pos.x += GetScreenWidth();
+    if (player->segments[0].pos.y + player->movement.y < 0)
+        player->segments[0].pos.y += GetScreenHeight();
+    if (player->segments[0].pos.y + player->movement.y > GetScreenHeight())
+        player->segments[0].pos.y -= GetScreenHeight() + GRID_SIZE;
+}
 
 void MovePlayer(Player *player)
 {
@@ -28,16 +42,18 @@ void MovePlayer(Player *player)
     {
         player->segments[i].pos = player->segments[i - 1].pos;
     }
+    CheckLimits(player);
     player->segments[0].pos = Vector2Add(player->segments[0].pos, player->movement);
+    player->lastdir = player->dir;
 }
 
 bool CheckSelfCollision(Player *player)
 {
     //
-    for (int i = 1; i < player->length - 1; i++)
+    for (int i = 1; i < player->length; i++)
     {
-
-        if (Vector2Equals(player->segments[0].pos, player->segments[i].pos) != 0)
+        if (Vector2Equals(Vector2Add(player->segments[0].pos, player->movement),
+                          player->segments[i].pos) == 1)
         {
             return true;
         }

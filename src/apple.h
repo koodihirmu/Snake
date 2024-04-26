@@ -9,4 +9,4 @@ typedef struct
 } Apple;
 
 void RenderApple(Apple *apple);
-void RespawnApple(Apple *apple, int GRID_SIZE);
+void RespawnApple(Apple *apple);
